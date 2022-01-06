@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 
-export function NewNoteForm(props) {
-  const [note, setNote] = useState({ description: "" });
+export function NewNoteForm({ createNote }) {
+  const [noteDescription, setNoteDescription] = useState('');
+  const [noteCompleted, setNoteCompleted] = useState(false)
 
   return (
     <form onSubmit={() => submitNote()}>
@@ -9,19 +10,19 @@ export function NewNoteForm(props) {
         rows={15}
         placeholder="Type your to-do note"
         className="form-note_input"
-        value={props.note}
-        onChange={(event) => setNote(event.target.value)}
+        value={noteDescription}
+        onChange={(event) => setNoteDescription(event.target.value)}
       />
       <button
-        onClick={submitNote}
+        onClick={(event) => {event.preventDefault(); submitNote()}}
       >
         Create to-do entry
       </button>
     </form>
   );
 
-  function submitNote(event) {
-    event.preventDefault();
-    props.createNote(note);
+  function submitNote() {
+    createNote({description: noteDescription, completed: noteCompleted});
+    setNoteDescription('')
   }
 }

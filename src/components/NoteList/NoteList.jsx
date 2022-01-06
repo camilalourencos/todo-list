@@ -1,13 +1,13 @@
 import React from 'react';
 import { NoteCard } from '../NoteCard/NoteCard.jsx'
 
-export function NoteList(props) {
+export function NoteList({ myNotes, onRemove }) {
   return (
     <ul className='notes-list'>
-        {props.myNotes.map((note, index) => {
+        {myNotes.map((note, index) => {
             return (
                 <li className='note-list_item' key={index}>
-                    <NoteCard notes={note} />
+                    <NoteCard notes={note} onRemove={onRemove}/>
                 </li>
             );
         })}
