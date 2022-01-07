@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import api from './services/api.js';
 import { NewNoteForm } from './components/NewNoteForm/NewNoteForm.jsx';
 import { NoteList } from './components/NoteList/NoteList.jsx'
+import "./assets/App.css";
 
 function App() {
 
@@ -22,10 +23,9 @@ function App() {
   }, [getNote])
   
   return ( 
-    <div className="App">
+    <div className="home-list">
       <NewNoteForm createNote={handleCreateNote}/>
       {renderNoteList ()}
-      
     </div>
   );
 

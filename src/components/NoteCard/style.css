@@ -1,0 +1,41 @@
+.note-card {
+    min-height: 15px;
+    min-width: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    border-radius: 4px;
+    flex-wrap: wrap;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    padding: 12px;
+  }
+  
+  .note-card_description{
+    margin-top: 8px;
+    font-size: 1em;
+  }
+
+  .completed-checkbox input[type=checkbox] 
+  {
+   display:none;
+  }
+  .completed-checkbox input[type=checkbox] + label
+   {
+ 
+       background: #999;
+       height: 16px;
+       width: 16px;
+       display:inline-block;
+       padding: 0 0 0 0px;
+   }
+   
+   .completed-checkbox input[type=checkbox]:checked + label
+    {
+   
+        background: #ffae00;
+        height: 16px;
+        width: 16px;
+        display:inline-block;
+        padding: 0 0 0 0px;
+    }

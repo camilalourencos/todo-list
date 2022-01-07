@@ -1,5 +1,6 @@
 import React from 'react';
 import { NoteCard } from '../NoteCard/NoteCard.jsx'
+import "./style.css";
 
 export function NoteList({ myNotes, onRemove }) {
   return (
