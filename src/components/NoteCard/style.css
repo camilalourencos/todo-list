@@ -1,41 +1,100 @@
-.note-card {
-    min-height: 15px;
-    min-width: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
-    border-radius: 4px;
-    flex-wrap: wrap;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
-    padding: 12px;
-  }
-  
+  .note-card {
+      min-height: 15px;
+      min-width: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      border-radius: 4px;
+      flex-wrap: wrap;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+      padding: 12px;
+      margin: 0 10px 0 10px;
+    }
+    
   .note-card_description{
     margin-top: 8px;
     font-size: 1em;
+    }
+
+  .actions-buttons{
+    display: inline-flex;
+  }
+    .container {
+      display: block;
+      position: relative;
+      padding-left: 35px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 22px;
+    }
+    
+    /* Esconder o checkbox padrão */
+    .container input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+    
+    /* Criar o checkbox customizado */
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 18px;
+      width: 18px;
+      background-color: #eee;
+      border-radius: 2px;
+      margin: 5px;
+    }
+    
+    /* Adicionar uma cor de fundo cinza ao passar o mouse */
+    .container:hover input ~ .checkmark {
+      background-color: #ccc;
+      transform: scale(1.1);
+    }
+    
+    /* Quando o checkbox é clicado, adicionar um fundo rosa */
+    .container input:checked ~ .checkmark {
+      background-color: #ff0a54;
+    }
+    
+    /* Criar o ícone de check, escondido quando não estiver selecionado */
+    .container .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 6px;
+      top: 3px;
+      width: 4px;
+      height: 7px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+    }
+    
+    /* Exibir o ícone quando selecionado */
+    .container input:checked ~ .checkmark:after {
+      display: block;
+    }
+
+
+
+  .form-delete-input {
+    padding-top: 3px;
+    margin: 5px;
+    align-self: flex-end;
+    float: inline-end;
+    border: none;
+    background: none;
+    transform: scale(1.2);
   }
 
-  .completed-checkbox input[type=checkbox] 
-  {
-   display:none;
+  .form-delete-input:hover {
+    transform: scale(1.3);
+    color:rgb(31, 106, 150);
   }
-  .completed-checkbox input[type=checkbox] + label
-   {
- 
-       background: #999;
-       height: 16px;
-       width: 16px;
-       display:inline-block;
-       padding: 0 0 0 0px;
-   }
-   
-   .completed-checkbox input[type=checkbox]:checked + label
-    {
-   
-        background: #ffae00;
-        height: 16px;
-        width: 16px;
-        display:inline-block;
-        padding: 0 0 0 0px;
-    }
+
+
