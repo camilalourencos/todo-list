@@ -31,7 +31,7 @@ function App() {
 
   function renderNoteList () {
     if (myNotes && myNotes.length){
-      return <NoteList myNotes={myNotes} onRemove={deleteNote}/>
+      return <NoteList myNotes={myNotes} onRemove={deleteNote} onEdit={editNote} changeStatus={editStatus}/>
     } else {
       return null
     }
@@ -50,7 +50,7 @@ function App() {
   function handleCreateNote(newNote) {
     api
      .post('/tasks', newNote)
-       .then((response) => setMyNotes([...myNotes, response.data]))
+       .then((response) => {setMyNotes([...myNotes, response.data]); console.log(response.data)})
        .catch(error => {
         console.error('deu ruim no post ' + error);
       });  
@@ -58,9 +58,23 @@ function App() {
   
   function deleteNote (id) {
     api
-      .delete('/tasks/'+ id)
-        .then(() => { myNotes.splice(0,1); setMyNotes(myNotes) }  
+      .delete(`/tasks/${id}`)
+        .then(() => { myNotes.splice(0,1); setMyNotes(myNotes)}  
         )
+  }
+
+  function editNote (id, editedNote) {  
+    api
+      .put(`/tasks/${id}`, editedNote)
+        //.then((response) => {console.log(response.data)})
+        .catch(error => {
+        console.error('deu ruim no edit ' + error);
+      });  
+  }
+
+  function editStatus (id, statusNote){
+    api
+    .put(`/tasks/${id}`, statusNote)
   }
 }
 
