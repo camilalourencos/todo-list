@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./style.css";
 
-export function NewNoteForm({ createNote }) {
+export function NewNoteForm({ createNote, notes }) {
   const [noteDescription, setNoteDescription] = useState('');
   const [noteCompleted, setNoteCompleted] = useState(false)
 

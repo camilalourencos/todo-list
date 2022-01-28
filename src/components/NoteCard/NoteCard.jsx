@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { FaRegTrashAlt, FaPencilAlt, FaUpload } from 'react-icons/fa';
+import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
 import "./style.css";
 
-export function NoteCard({ notes, onRemove, onEdit, changeStatus }) {
+export function NoteCard({ notes, onRemove, onEdit }) {
     const [status, setStatus] = useState(notes.completed)
     const [editable, setEditable] = useState(false)
     const [noteText, setNoteText] = useState(notes.description)
@@ -19,7 +19,10 @@ export function NoteCard({ notes, onRemove, onEdit, changeStatus }) {
                     <input
                         type='checkbox'
                         defaultChecked={notes.completed}
-                        onChange={() => setStatus(true)}
+                        onChange={(event) => {
+                            setStatus(event.target.checked);
+                            updateNote(); 
+                            console.log(notes.completed)}}
                     />
                     <span className='checkmark'></span>
                 </label>
@@ -46,7 +49,7 @@ export function NoteCard({ notes, onRemove, onEdit, changeStatus }) {
 
     function renderEditArea () {
         return (            
-            <form className='form-edit' onSubmit={() => updateNote()}>
+            <form className='form-edit'>
                 <textarea
                 className="form-edit_input"
                 value={noteText}
@@ -57,6 +60,7 @@ export function NoteCard({ notes, onRemove, onEdit, changeStatus }) {
                 onClick={(event) => {
                     event.preventDefault(); 
                     updateNote();
+                    setEditable(false);
                     }}
                 >
                 Save
@@ -75,13 +79,5 @@ export function NoteCard({ notes, onRemove, onEdit, changeStatus }) {
 
     function updateNote() { 
         onEdit(notes.id, {id: notes.id, description: noteText, completed: status});
-    }
-
-    function updateStatus() {
-        if(status) {
-            return setStatus(true)
-        }else {
-            return setStatus(false)
-        }
     }
 }

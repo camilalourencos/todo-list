@@ -24,14 +24,14 @@ function App() {
   
   return ( 
     <div className="home-list">
-      <NewNoteForm createNote={handleCreateNote}/>
+      <NewNoteForm createNote={handleCreateNote} myNotes={myNotes}/>
       {renderNoteList ()}
     </div>
   );
 
   function renderNoteList () {
     if (myNotes && myNotes.length){
-      return <NoteList myNotes={myNotes} onRemove={deleteNote} onEdit={editNote} changeStatus={editStatus}/>
+      return <NoteList myNotes={myNotes} onRemove={deleteNote} onEdit={editNote} />
     } else {
       return null
     }
@@ -70,11 +70,6 @@ function App() {
         .catch(error => {
         console.error('deu ruim no edit ' + error);
       });  
-  }
-
-  function editStatus (id, statusNote){
-    api
-    .put(`/tasks/${id}`, statusNote)
   }
 }
 
