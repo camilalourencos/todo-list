@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
 import "./style.css";
 
@@ -6,11 +6,20 @@ export function NoteCard({ notes, onRemove, onEdit }) {
     const [status, setStatus] = useState(notes.completed)
     const [editable, setEditable] = useState(false)
     const [noteText, setNoteText] = useState(notes.description)
+    const noteID = notes.id
+
+    useEffect (() => {
+        console.log(notes);
+        setStatus(notes.completed);
+        console.log(status);
+        setEditable(false);
+        setNoteText(notes.description);
+    },[notes])
 
     return (
         <section className='note-card'>
             <header className='note-card_header'>
-                <span className='note-card_description'>
+                <span className='note-card_description'>    
                     {renderText()}    
                 </span>
             </header>
@@ -18,23 +27,27 @@ export function NoteCard({ notes, onRemove, onEdit }) {
                 <label className='container'> 
                     <input
                         type='checkbox'
-                        defaultChecked={notes.completed}
-                        onChange={(event) => {
-                            setStatus(event.target.checked);
-                            updateNote(); 
-                            console.log(notes.completed)}}
+                        value={status}
+                        defaultChecked={status}
+                        onChange={(event) => {  
+                            event.stopPropagation();
+                            //setStatus(!status);   
+                            console.log(event.target.checked);
+                            //setStatus(event.target.checked);
+                            updateStatus(event.target.checked);
+                        }}
                     />
                     <span className='checkmark'></span>
                 </label>
                 <button 
                     className='form-delete-input'
-                    onClick={() => {onRemove(notes.id); console.log(notes.id)}}
+                    onClick={() => onRemove(noteID)}
                 >
                     <FaRegTrashAlt/>
                 </button>
                 <button 
                     className='form-edit-input'
-                    onClick={() => setEditable(true)}
+                    onClick={() => {setEditable(true); console.log(status)}}
                 >
                     <FaPencilAlt/>
                 </button>
@@ -78,6 +91,14 @@ export function NoteCard({ notes, onRemove, onEdit }) {
     }
 
     function updateNote() { 
-        onEdit(notes.id, {id: notes.id, description: noteText, completed: status});
+        onEdit(noteID, {...notes, description: noteText});
+    }
+
+    function updateStatus(event) {
+        setTimeout(() => {
+            setStatus(event);
+            onEdit(noteID, {...notes, completed: event});
+        }, 100)
+
     }
 }

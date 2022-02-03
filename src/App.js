@@ -8,19 +8,10 @@ import "./assets/App.css";
 function App() {
 
   const [myNotes, setMyNotes] = useState([])
-  const prevNotesRef = useRef()
 
   useEffect(() => {
-    prevNotesRef.current = myNotes
-  })
-
-  const prevNotes = prevNotesRef.current;
-
-  useEffect(() => {
-    if(prevNotes !== myNotes){
       getNote ()
-    }
-  }, [getNote])
+  }, [])
   
   return ( 
     <div className="home-list">
@@ -40,30 +31,34 @@ function App() {
   function getNote () {
     api 
       .get('/tasks')
-      .then((response) => setMyNotes(response.data))
+      .then((response) => {setMyNotes(response.data) })
       .catch((error) => { 
         console.error('deu ruim no get ' + error);
         setMyNotes([])
       });
   }
 
-  function handleCreateNote(newNote) {
+  function handleCreateNote (newNote) {
     api
      .post('/tasks', newNote)
-       .then((response) => {setMyNotes([...myNotes, response.data]); console.log(response.data)})
+       .then((response) => setMyNotes([...myNotes, response.data]))
        .catch(error => {
         console.error('deu ruim no post ' + error);
       });  
   }
   
   function deleteNote (id) {
+    const index = myNotes.findIndex((note) => note.id === id )
+    const deleted = myNotes.splice(index, 1)
+
     api
       .delete(`/tasks/${id}`)
-        .then(() => { myNotes.splice(0,1); setMyNotes(myNotes)}  
+        .then(() => { setMyNotes([...myNotes]) }  
         )
   }
 
   function editNote (id, editedNote) {  
+    //console.log(editedNote)
     api
       .put(`/tasks/${id}`, editedNote)
         //.then((response) => {console.log(response.data)})
