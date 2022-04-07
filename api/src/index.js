@@ -31,9 +31,7 @@ app.get('/tasks/:id?', (req, res) => {
 });
 
 app.post('/tasks', (req, res) => {
-  const newTask = {
-    id: id,
-  };
+  const newTask = { id, ...req.body };
   tasks.push(newTask);
   res.status(201).send(newTask);
 });
