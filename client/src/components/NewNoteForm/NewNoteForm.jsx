@@ -6,25 +6,30 @@ export function NewNoteForm({ createNote,  }) {
   const [noteCompleted, setNoteCompleted] = useState(false)
 
   return (
-    <section className='form'> 
-      <form className='form-note' >
+    <section className='form'>
+      <form className='form-note'>
         <textarea
           rows={5}
-          placeholder="Type your to-do note"
-          className="form-note_input"
+          placeholder='Type your to-do note'
+          className='form-note_input'
           value={noteDescription}
-          onChange={(event) => {setNoteDescription(event.target.value) }}
+          onChange={(event) => {
+            setNoteDescription(event.target.value);
+            console.log(event.target.value);
+          }}
         />
         <button
-          className="form-note_submit"
+          className='form-note_submit'
           disabled={!noteDescription.length}
-          onClick={(event) => {event.preventDefault(); submitNote()}}
+          onClick={(event) => {
+            event.preventDefault();
+            submitNote();
+          }}
         >
           Add
         </button>
       </form>
     </section>
-
   );
 
   function submitNote() {
