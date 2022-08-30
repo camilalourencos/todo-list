@@ -1,6 +1,8 @@
+import dotenv from 'dotenv';
 import app from './src/index.js';
 
-const port = 8080;
+dotenv.config();
+const port = process.env.PORT;
 
 app.listen(port, (error) => {
   if (error) throw error;
