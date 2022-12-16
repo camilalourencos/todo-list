@@ -1,51 +1,51 @@
 import express from 'express';
-import { v4 as uuidv4 } from 'uuid';
+import Task from '../model/task.js';
 import * as TaskRepository from '../repository/task-repository.js';
 
 export const router = express.Router();
 
-router.post('/tasks', (req, res) => {
-  const newTask = { id: uuidv4(), ...req.body };
+async function addNewTask(req, res) {
 
-  TaskRepository.addTask(newTask);
-  res.status(201).send(newTask);
-});
+  await Task.create({
+    description: req.body.description,
+    status: req.body.completed,
+    userlogin: req.body.userlogin,
+  }).then((result) => res.json(result));
+}
 
-router.get('/tasks', (req, res) => {
-  const userLogin = req.body.userLogin;
-  const taskByUser = TaskRepository.findByUser(userLogin);
+async function findAllByUser(req, res) {
+  const login = req.params.user;
+  await Task.findAll({ where: { userlogin: login } }).then((result) => res.send(result));
+  console.log(login)
+}
 
-  if (taskByUser) {
-    res.status(200).send(taskByUser);
-    //console.log(tasks);
-  } else {
-    res.status(404).send('There is no task for this user');
-  }
-});
+async function findById(req, res) {
+  await Task.findByPk(req.params.id).then((result) => res.json(result));
+}
 
-router.get('/tasks/:id?', (req, res) => {
-  const item = TaskRepository.findById(req.params.id);
+async function updateTask(req, res) {
+  await Task.update(
+    {
+      description: req.body.description,
+      status: req.body.completed
+    },
+    {
+      where: {
+        id: req.params.id
+      }
+    }
+  );
+  Task.findByPk(req.params.id).then((result) => res.json(result));
+}
 
-  if (item) {
-    res.send(TaskRepository.taskList()[item]);
-  } else {
-    res.status(404).send('Note not found');
-  }
-});
+async function deleteTask(req, res) {
+  await Task.destroy({
+    where: {
+      id: req.params.id
+    }
 
-router.put('/tasks/:id?', (req, res) => {
-  const item = TaskRepository.findById(req.params.id);
-  const tasks = TaskRepository.taskList();
+  });
+  Task.findAll().then((result) => res.json(result));
+};
 
-  tasks[item].description = req.body.description;
-  tasks[item].completed = req.body.completed;
-
-  res.send(tasks[item]);
-});
-
-router.delete('/tasks/:id?', (req, res) => {
-  const item = TaskRepository.findById(req.params.id);
-  TaskRepository.taskList().splice(item, 1);
-
-  res.send(taskList());
-});
+export default { addNewTask, findAllByUser, deleteTask, findById, updateTask };

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "./style.css";
 
-export function NewNoteForm({ createNote,  }) {
+export function NewNoteForm({ createNote, userLogin }) {
   const [noteDescription, setNoteDescription] = useState('');
   const [noteCompleted, setNoteCompleted] = useState(false)
+  const [user, setUser] = useState('');
 
   return (
     <section className='form'>
@@ -33,8 +34,7 @@ export function NewNoteForm({ createNote,  }) {
   );
 
   function submitNote() {
-    createNote({ description: noteDescription, completed: noteCompleted });
+    createNote({ description: noteDescription, completed: noteCompleted, userlogin: userLogin });
     setNoteDescription('')
-    
   }
 }

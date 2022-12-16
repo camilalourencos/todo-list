@@ -2,33 +2,43 @@ import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcryptjs';
 import User from '../model/user.js';
-import * as UserRepository from '../repository/user-repository.js';
+//import * as UserRepository from '../repository/user-repository.js';
 
 export const router = express.Router();
 
-router.get('/users', (req, res) => {
-  res.status(200).send(UserRepository.userList());
-});
+async function getAllUsers(req, res) {
+  await User.findAll().then((result) => res.json(result));
+}
 
-router.get('/users/:id?', (req, res) => {
-  const id = req.params.id;
-  const userId = UserRepository.findById(id);
+async function getUserById(req, res) {
+  await User.findByPk(req.params.id).then((result) => res.json(result));
+}
 
-  if (userId) {
-    res.send(userId);
-  } else {
-    res.status(404).send('User not found');
-  }
-});
+function createUser(req, res) {
+  User.create({
+    username: req.body.username,
+    password: bcrypt.hashSync(req.body.password, 10),
+    login: req.body.login,
+  })
+    .then((result) => res.json(result))
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Tutorial."
+      });
+    });
 
-router.post('/users', (req, res) => {
-  const newUser = new User();
-  //const newUser = req.body;
-  newUser.login = req.body.login;
-  newUser.userName = req.body.userName;
-  newUser.id = uuidv4();
-  newUser.password = bcrypt.hashSync(req.body.password, 10);
+}
 
-  UserRepository.addUser(newUser);
-  res.status(201).send(newUser);
-});
+async function deleteUser(req, res) {
+  await User.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then((result) => res.json(result))
+  //User.findAll().then((result) => res.json(result));
+};
+
+export default { getAllUsers, getUserById, createUser, deleteUser }
+
